@@ -18,3 +18,17 @@ export function filterGameByGenre(payload) {
     }
 
 }
+
+export function filterCreatedBy(payload) {
+    return {
+        type: 'FILTER_CREATED_BY',
+        payload: payload
+}
+}
+
+export function orderBy(payload) {
+    return {
+        type: 'ORDER_BY',
+        payload: payload
+    }
+}

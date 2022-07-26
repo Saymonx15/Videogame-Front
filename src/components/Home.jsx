@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import { getVideogames, filterGameByGenre } from "../actions";
+import { getVideogames, filterGameByGenre, filterCreatedBy, orderBy } from "../actions";
 import Card from "./Card";
 import Paginado from "./Paginado";
 
@@ -12,6 +12,7 @@ export default function Home() {
     
     const allGames = useSelector((state) => state.videogames);
     const allFilter = useSelector((state) => state.filteredGames);
+    const [order, setOrder] = useState("");
     const [currentPage, setCurrentPage] = useState(1); // setea la pagina actual
     const [gamesPerPage,setGamesPerPage] = useState(15); // setea cuantos games van a mostrar por pagina
     const indexOfLastGame = currentPage * gamesPerPage; // calcula el indice del ultimo game a mostrar en la pagina actual
@@ -30,7 +31,7 @@ const paginado = (pageNumber) => {
 
     useEffect(() => {
         dispatch(getVideogames());
-    }, [dispatch]);
+    }, []);
 
     useEffect(() => {
         if (genre !== "") {
@@ -49,6 +50,22 @@ const paginado = (pageNumber) => {
 
     function handleFilterGenre(e){
         dispatch(filterGameByGenre(e.target.value));
+        setGenre(e.target.value);
+        setCurrentPage(1);
+       
+
+    }
+
+    function handleFilterCreated(e){
+        dispatch(filterCreatedBy(e.target.value));
+        setOrder(e.target.value);
+    }
+
+    function handleOrderBy(e){
+        e.preventDefault();
+        dispatch(orderBy(e.target.value));
+        setCurrentPage(1);
+        setOrder(`Ordenado por: ${e.target.value}`); // setea el orden de los games desde la pagina 1, es CLAVE: setOrder
     }
 
     return (
@@ -57,7 +74,7 @@ const paginado = (pageNumber) => {
             <h1> Videogame</h1>
             <button onClick={e=>{handleClick(e)}}> Volver a cargar todos los videogames</button>
             <div>
-                <select >
+                <select onChange={e => handleOrderBy(e)}>
                     <option value="asc"> Ascendente</option>
                     <option value="desc"> Descendente</option>
                 </select>
@@ -78,7 +95,7 @@ const paginado = (pageNumber) => {
                     <option value="Fighting"> Fighting </option>
                 </select>
 
-                <select>
+                <select onChange={e => {handleFilterCreated(e)}}>
                     <option value="All">Todos</option>
                     <option value="created">Creados</option>
                     <option value="api">Existente</option>
@@ -91,7 +108,7 @@ const paginado = (pageNumber) => {
                  paginado={paginado} 
                     />
 
-                {  filteredGames.length > 0 ? allFilter.map((game) => {
+                 {  filteredGames.length > 0 ? allFilter.map((game) => {
                     return (
                         <div className="CardGame">
                             <Link to={`/videogame/${game.id}`}>
@@ -99,7 +116,7 @@ const paginado = (pageNumber) => {
                             </Link>
                         </div>
                     );
-                } ) : 
+                } ) :                  
                 currentGames?.map((game) => {
                     return (
                         <div className="CardGame">
