@@ -9,3 +9,12 @@ export function getVideogames(){
         });
     }
 }
+
+export function filterGameByGenre(payload) {
+    console.log(payload);
+    return {
+        type: 'FILTER_GAME_BY_GENRE',
+        payload: payload
+    }
+
+}

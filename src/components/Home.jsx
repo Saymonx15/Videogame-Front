@@ -2,19 +2,44 @@ import React from "react";
 import { Link } from "react-router-dom";
 import {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import { getVideogames } from "../actions";
+import { getVideogames, filterGameByGenre } from "../actions";
 import Card from "./Card";
+import Paginado from "./Paginado";
 
 export default function Home() {
 
     const dispatch = useDispatch();
+    
+    const allGames = useSelector((state) => state.videogames);
+    const allFilter = useSelector((state) => state.filteredGames);
+    const [currentPage, setCurrentPage] = useState(1); // setea la pagina actual
+    const [gamesPerPage,setGamesPerPage] = useState(15); // setea cuantos games van a mostrar por pagina
+    const indexOfLastGame = currentPage * gamesPerPage; // calcula el indice del ultimo game a mostrar en la pagina actual
+    const indexOfFirstGame = indexOfLastGame - gamesPerPage; // calcula el indice del primer game a mostrar en la pagina actual
+    const currentGames = allFilter.length > 0 ? allFilter.slice(indexOfFirstGame, indexOfLastGame) : allGames.slice(indexOfFirstGame, indexOfLastGame) // es la constante que contiene los games a mostrar en cada pagina (CLAVE: currentGames)
 
-    const allGames = useSelector(state => state.videogames);
+    const [genre, setGenre] = useState(""); // setea el genero a filtrar
+    const [filteredGames, setFilteredGames] = useState([]); // setea los games filtrados por genero (CLAVE: filteredGames)
+    const [filtered, setFiltered] = useState(false); // setea si hay games filtrados o no (CLAVE: filtered)
+
+    
+
+const paginado = (pageNumber) => {
+    setCurrentPage(pageNumber);
+}
 
     useEffect(() => {
         dispatch(getVideogames());
     }, [dispatch]);
 
+    useEffect(() => {
+        if (genre !== "") {
+            dispatch(filterGameByGenre(genre));
+            setFiltered(true);
+        } else {
+            setFiltered(false);
+        }
+    } ,[genre]);
 
     function handleClick(e){
         e.preventDefault();
@@ -22,17 +47,21 @@ export default function Home() {
 
     }
 
+    function handleFilterGenre(e){
+        dispatch(filterGameByGenre(e.target.value));
+    }
+
     return (
         <div className="container"> 
             <Link to="/videogame"> Crear Game</Link>
             <h1> Videogame</h1>
-            <button onClick={e=> {handleClick(e)}}> Volver a cargar todos los videogames</button>
+            <button onClick={e=>{handleClick(e)}}> Volver a cargar todos los videogames</button>
             <div>
                 <select >
                     <option value="asc"> Ascendente</option>
                     <option value="desc"> Descendente</option>
                 </select>
-                <select> 
+                <select onChange={e=> { handleFilterGenre(e) }}> 
                     <option value="All"> All </option>
                     <option value="Adventure"> Adventure </option>
                     <option value="Puzzle"> Puzzle </option>
@@ -54,15 +83,33 @@ export default function Home() {
                     <option value="created">Creados</option>
                     <option value="api">Existente</option>
                 </select>
-                { allGames?.map((game) => {
+            
+                <Paginado
+                 gamesPerPage={gamesPerPage}
+                 allGames={allGames.length}
+                 allFilter= {allFilter.length} 
+                 paginado={paginado} 
+                    />
+
+                {  filteredGames.length > 0 ? allFilter.map((game) => {
                     return (
-                        <fragment className="CardGame">
+                        <div className="CardGame">
                             <Link to={`/videogame/${game.id}`}>
                             <Card key={game.id} name={game.name} image={game.image} genre={game.genre} />
                             </Link>
-                        </fragment>
+                        </div>
+                    );
+                } ) : 
+                currentGames?.map((game) => {
+                    return (
+                        <div className="CardGame">
+                            <Link to={`/videogame/${game.id}`}>
+                            <Card key={game.id} name={game.name} image={game.image} genre={game.genre} />
+                            </Link>
+                        </div>
                     );
                 } )}
+                
                 
             </div>
         </div>
