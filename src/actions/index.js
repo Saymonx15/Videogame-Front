@@ -58,6 +58,15 @@ export function ratingLow(payload){
     }
 }
 
+export function postVideogame(payload){
+    return async function (dispatch) {
+        const data = await axios.post('http://localhost:3001/videogame', payload);
+        console.log(data);
+        return data
+    }
+}
+
+
 export function getNameVideogames(payload) {
     return async function(dispatch) {
         try {

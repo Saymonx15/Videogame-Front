@@ -4,6 +4,7 @@ const initialState = {
     filteredGames: [],
     stateAllVideogames: [],
     genres:[],
+ 
 }
 
 function rootReducer (state=initialState, action) {
@@ -22,6 +23,7 @@ function rootReducer (state=initialState, action) {
                 ...state,
                 genres: action.payload
             }
+
         case 'FILTER_GAME_BY_GENRE':
             const allGames = state.videogames;
            
@@ -42,6 +44,14 @@ function rootReducer (state=initialState, action) {
         }
         
         case 'FILTER_BY_RATING':
+            if(action.payload === 'All'){
+                return {
+                    ...state,
+                    filteredGames: state.stateAllVideogames,
+                    videogames: state.stateAllVideogames
+                }
+            }
+
             const newRating = state.videogames;
             const newFilter = state.filteredGames;
             if(newRating.length > newFilter.length  ){
@@ -68,6 +78,11 @@ function rootReducer (state=initialState, action) {
                 }
                 return 0;
             })
+            return{
+                ...state,
+                filteredGames:sortByRating
+               
+            } 
         } else {
            let  filterRating = newRating
            let sortByRating = action.payload === "Hight"
@@ -99,7 +114,7 @@ function rootReducer (state=initialState, action) {
             return{
                 ...state,
                videogames: sortByRating,
-                filteredGames: sortByRating
+               filteredGames: sortByRating
                
             }  
         }      
@@ -142,7 +157,11 @@ function rootReducer (state=initialState, action) {
                 ...state,
                 filteredGames: filteredGamesByName
             }
+            case 'POST_VIDEOGAME': //es necesario que este en el reducer, por mas que no haga nada en particular, ya que se crea en una ruta nueva. 
+                return {
+                    ...state,
 
+                }
 
 
         default:
