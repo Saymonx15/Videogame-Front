@@ -1,0 +1,43 @@
+.container{
+    padding: 0rem 7rem;
+    background-image: url("https://media.istockphoto.com/vectors/game-background-with-gamepad-and-graphic-elements-joystick-sign-vector-id1207017851?k=20&m=1207017851&s=612x612&w=0&h=Ur1iIefBRRj3Jd34W-mNdKOAplKnhQ-hBPUaGJ8YfWg=");
+    
+}
+.BtnCreated{
+    background-color: #00bcd4;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.BtnCreated:hover{
+    background-color: #087e8e;
+    color: white;
+}
+.Title{
+    font-size: 4rem;
+    font-weight: bold;
+    color: #d40091;
+    text-align: center;
+    font-family: fantasy;
+}
+.searchBar{
+    margin: 0.5rem;
+    border-radius: 5px;
+    border: none;
+    padding: 10px 20px;
+}
+.TitleLanding{
+    font-size: 4rem;
+    font-weight: bold;
+    color: white;
+    text-align: center;
+    font-family: fantasy;
+}

@@ -4,7 +4,7 @@ const initialState = {
     filteredGames: [],
     stateAllVideogames: [],
     genres:[],
- 
+    details: [],
 }
 
 function rootReducer (state=initialState, action) {
@@ -51,11 +51,12 @@ function rootReducer (state=initialState, action) {
                     videogames: state.stateAllVideogames
                 }
             }
-
+            
             const newRating = state.videogames;
             const newFilter = state.filteredGames;
-            if(newRating.length > newFilter.length  ){
-            let filterRating = newFilter 
+            let filterRating;
+            newRating.length > newFilter.length ? filterRating = newFilter : filterRating = newRating
+            
 
            let sortByRating = action.payload === "Hight"
             ? filterRating.sort((a,b)=>{
@@ -82,41 +83,8 @@ function rootReducer (state=initialState, action) {
                 ...state,
                 filteredGames:sortByRating
                
-            } 
-        } else {
-           let  filterRating = newRating
-           let sortByRating = action.payload === "Hight"
-             ? filterRating.sort((a,b)=>{
-                 
-                 if(a.rating > b.rating){
-                     return -1;
-                 }
-                 if(a.rating < b.rating){
-                     return 1;
-                 }
-                 return 0;
- 
-             }): filterRating.sort((a,b)=>{
- 
-                 if(a.rating > b.rating){
-                     return 1;
-                 }
-                 if(a.rating < b.rating){
-                     return -1;
-                 }
-                 return 0;
-             })
+             
         
-
-            console.log(state.filteredGames.length)
-            console.log(state.videogames.length)
-
-            return{
-                ...state,
-               videogames: sortByRating,
-               filteredGames: sortByRating
-               
-            }  
         }      
         case 'FILTER_CREATED_BY':
             const gameCreated = state.videogames.filter(el => el.createInDB)
@@ -162,7 +130,16 @@ function rootReducer (state=initialState, action) {
                     ...state,
 
                 }
-
+                case 'GET_DETAILS_VIDEOGAMES':
+                    return {
+                        ...state,
+                        details: action.payload
+                    }
+                    case "CLEAN_DETAILS":
+                        return{
+                            ...state,
+                            details:[]
+                        }
 
         default:
             return state;

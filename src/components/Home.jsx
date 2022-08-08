@@ -8,6 +8,7 @@ import Paginado from "./Paginado";
 import SearchBar from "./SearchBar";
 import GenreSelector from "./Genres";
 import FilterInputRating from "./FilterRating";
+import styles from "./Home.module.css";
 
 export default function Home() {
 
@@ -30,28 +31,34 @@ export default function Home() {
     const [filteredGames, setFilteredGames] = useState([]); // setea los games filtrados por genero (CLAVE: filteredGames)
     const [filtered, setFiltered] = useState(false); // setea si hay games filtrados o no (CLAVE: filtered)
 
-    
+
 
 const paginado = (pageNumber) => {
     setCurrentPage(pageNumber);
 }
 
+
     useEffect(() => {
         dispatch(getVideogames());
+        dispatch(getGenres());
     }, [dispatch]);
 
+ if(allGames.length === 0 && allFilter.length === 0){
+     return <h1 className={styles.TitleLanding}>Cargando...</h1>
+ }
+    
 
-    useEffect( ()=>{
-        dispatch(getGenres())
-    },[dispatch])
+    // useEffect( ()=>{
+    //     dispatch(getGenres())
+    // },[dispatch])
 
+    
 
     function handleClickAllGames(e){
         e.preventDefault();
         dispatch(getVideogames());
         setCurrentPage(1);
-    }
-
+     }
     function handleFilterGenre(e){
         dispatch(filterGameByGenre(e.target.value));
         setCurrentPage(1);
@@ -79,12 +86,15 @@ const paginado = (pageNumber) => {
 
 
     return (
-        <div className="container"> 
-            <Link to="/videogame"> Crear Game</Link>
-            <h1> Videogame</h1>
+        <div className={styles.container}> 
+            <Link to="/videogame" className={styles.BtnCreated}> Crear Game</Link>
+            <h1 className={styles.Title}> Play-gamer</h1>
             <button onClick={e=>{handleClickAllGames(e)}}> Volver a cargar todos los videogames</button>
             <FilterInputRating/>
-            <SearchBar />
+            <div className={styles.searchBar}>
+
+            <SearchBar  />
+            </div>
             <div>
                 <select onChange={e => handleOrderBy(e)}>
                     <option value="asc"> Ascendente</option>

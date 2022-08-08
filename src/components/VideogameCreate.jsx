@@ -4,18 +4,35 @@ import {Link, useHistory} from "react-router-dom";
 import {postVideogame,getGenres} from "../actions";
 import { useDispatch, useSelector } from "react-redux";
 
+
+function validate(formulario) {
+    let errors = {};
+    if (!formulario.name) {
+        errors.name = "El nombre es requerido";
+    } 
+    if (formulario.description === "") {
+        errors.description = "La descripcion es requerida";
+    }
+      if (formulario.rating < 0 || formulario.rating > 5) {
+        errors.rating = "El rating debe estar entre 0 y 5";
+    }
+    return errors;
+  
+}
+
+
+
 export default function VideogameCreate(){
     const dispatch = useDispatch();
     const history = useHistory(); // se utiliza para redigir al usuario a una pagina
     const genres = useSelector((state) => state.genres);  // recordar que para obterner el state de redux debemos usar useSelector.
-    
-
+    const [errors, setErrors] = useState({});
     const [formulario, setFormulario] = useState({
         name: "",
         description: "",
         rating: "",
         image: "",
-        fechadelanzamiento: "",
+        released: "",
         genres: [],
         platforms: [],
     
@@ -30,13 +47,24 @@ export default function VideogameCreate(){
             ...formulario,
             [e.target.name]: e.target.value
         })
-    }
+        setErrors(validate({
+            ...formulario,
+            [e.target.name]: e.target.value
+        }));
+        
+        
+      }
     
     const handleChangeGenre = (e) => {
         setFormulario({
             ...formulario,
             genres:[...formulario.genres, e.target.value]
         })
+        setErrors(validate({
+            ...formulario,
+            [e.target.name]: e.target.value
+        }));
+        
     }
     const handleCheck = (e) => {
         if(e.target.checked) {
@@ -46,9 +74,37 @@ export default function VideogameCreate(){
             })
         }
     } 
+
+    const handleDeleteGenre = (el) => {
+        setFormulario({
+            ...formulario,
+            genres: formulario.genres.filter(genre => genre !== el)
+        })
+        console.log(el)
+    }
+
+
+
+
+    let regexRating =/[+]?([0-9]*[.])?\b[0-5]{1,1}\b/;; 
+    let expReg = /^\b[A-Za-zÑñÁáÉéÍíÓóÚúÜü\s0-9]+$/;
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(formulario);
+        if(!formulario.name){
+            return alert('Complete el nombre del juego');
+        }else if(!expReg.test(formulario.name)){
+            return alert('Colocar solo letras y numeros en el nombre');
+        }else if(!formulario.released){
+            return alert('Colocar una fecha de lanzamiento');
+        }else if(!regexRating.test(formulario.rating)) {
+            return alert('Colocar un rating entre 0 y 5');
+        }else if(!formulario.genres.length){
+            return alert('Seleccionar al menos un genero');
+        }else if(!formulario.platforms.length){
+            return alert('Seleccionar al menos 1 plataforma');
+        }else if(!formulario.description){
+            return alert('Completar la descripcion');
+        }
         dispatch(postVideogame(formulario));
         alert("Videojuego creado con exito");
         setFormulario({
@@ -56,10 +112,11 @@ export default function VideogameCreate(){
             description: "",
             rating: "",
             image: "",
-            fechadelanzamiento: "",
+            released: "",
             genres: [],
             platforms: [],
         })
+       
         history.push("/home");
     }
 
@@ -72,23 +129,28 @@ export default function VideogameCreate(){
                 <div>
                     <label>Nombre:</label>
                     <input type="text" name="name" onChange={(e) =>handleChange(e)}/>
+                    {errors.name && <p style={{color: 'red'}}>{errors.name}</p>}
                     <label>Descripcion:</label>
                     <input type="text" name="description" onChange={(e) =>handleChange(e)}/>
+                    {errors.description && <p style={{color: 'red'}}>{errors.description}</p>}
                     <label>Rating:</label>
-                    <input type="number" name="rating" onChange={(e) =>handleChange(e)}/>
+                    <input type="number"  name="rating" onChange={(e) =>handleChange(e)}/>
+                    {errors.rating && <p style={{color: 'red'}}>{errors.rating}</p>}   
                     <label>Image:</label>
                     <input type="text" name="image" onChange={(e) =>handleChange(e)}/>
                     <label>Fecha de lanzamiento:</label>
-                    <input type="date" name="fechadelanzamiento" onChange={(e) =>handleChange(e)}/>
+                    <input type="date" name="released" onChange={(e) =>handleChange(e)}/>
                     <label>Generos:</label>
-                    <select name="genres" onChange={(e) =>handleChangeGenre(e)}>
+                    <div>
+                     <select name="genres" onChange={(e) =>handleChangeGenre(e)}>
                         <option value="">Seleccione un genero</option>
                         {genres.map((genre) => {
-                            return (
-                                <option key={genre.id} value={genre.name}>{genre.name}</option>
+                            return (<option key={genre.id} value={genre.name}>{genre.name} </option>                      
                             )
-                        } )}
-                    </select>
+                        } )} 
+                        </select>
+                    </div>
+                    
                     <label>Plataformas:</label>
                     <label><input type="checkbox" name="platforms" value="PC" onChange={(e) => handleCheck(e)}/>PC</label>
                     <label><input type="checkbox" name="platforms" value="Playstation" onChange={(e) => handleCheck(e)}/>Playstation</label>
@@ -99,18 +161,16 @@ export default function VideogameCreate(){
                     <label><input type="checkbox" name="platforms" value="IOS" onChange={(e) => handleCheck(e)}/>IOS</label>
                     <label><input type="checkbox" name="platforms" value="macOS" onChange={(e) => handleCheck(e)}/>macOS</label>
                     <label><input type="checkbox" name="platforms" value="Linux" onChange={(e) => handleCheck(e)}/>Linux</label>
-
-                    <ul><li>{formulario.genres.map(el => el + ' ,' )}</li></ul>
-
-                    <button type="submit" onSubmit={(e) => handleSubmit(e)}>Crear Videogame</button>
-
-
-
-
-                        
-                        
+                
+                    <button type="submit" >Crear Videogame</button>
+   
                     </div>
             </form>
+            {formulario.genres.map(el => 
+                            <div>
+                                <p>{el}</p>
+                                <button  onClick={() => handleDeleteGenre(el)}>X</button>
+                            </div>)}
 
             </div>
     )

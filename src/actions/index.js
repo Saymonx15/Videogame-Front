@@ -58,13 +58,6 @@ export function ratingLow(payload){
     }
 }
 
-export function postVideogame(payload){
-    return async function (dispatch) {
-        const data = await axios.post('http://localhost:3001/videogame', payload);
-        console.log(data);
-        return data
-    }
-}
 
 
 export function getNameVideogames(payload) {
@@ -83,4 +76,34 @@ export function getNameVideogames(payload) {
        
     }
 
+}
+
+export function getDetailsVideogames(payload) {
+    return async function(dispatch) {
+        try {
+            let json = await axios.get(`http://localhost:3001/videogame/${payload}`  )
+            return dispatch({
+                type: 'GET_DETAILS_VIDEOGAMES',
+                payload: json.data
+            })
+            
+        }
+        catch (error) {
+            console.log(error);
+        }
+       
+    }
+}
+export function cleanDetails(){
+    return{
+        type: "CLEAN_DETAILS"
+    }
+}
+
+export function postVideogame(payload){
+    return async function (dispatch) {
+        const data = await axios.post('http://localhost:3001/videogame', payload);
+        console.log(data);
+        return data
+    }
 }
