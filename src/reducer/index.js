@@ -5,6 +5,7 @@ const initialState = {
     stateAllVideogames: [],
     genres:[],
     details: [],
+    favorites: [],
 }
 
 function rootReducer (state=initialState, action) {
@@ -140,7 +141,15 @@ function rootReducer (state=initialState, action) {
                             ...state,
                             details:[]
                         }
-
+                        case 'ADD_FAVORITES_GAME':
+                        const favorites = state.favorites;
+                        const newFavorites = favorites.includes(action.payload) ? favorites : [...favorites, action.payload];
+                        
+                        return {
+                            ...state,
+                            favorites: newFavorites
+                        }
+                 
         default:
             return state;
             

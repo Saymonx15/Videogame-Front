@@ -1,0 +1,96 @@
+.container{
+    background-image: url("https://t4.ftcdn.net/jpg/04/09/70/87/360_F_409708782_HxuxOH8f7xSmj5p4ygbAbuJE74vGGj2N.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100%;
+}
+.title{
+    font-size: 4rem;
+    font-weight: bold;
+    color: #d40091;
+    text-align: center;
+    font-family: fantasy;
+}
+.label{
+    font-size: 1.5rem;
+    font-weight: bold;
+    color:#d40091;
+    text-align: center;
+    font-family: fantasy;
+}
+.checkbox{
+    font-size: 1.2rem;
+    font-weight: bold;
+    color:#00bcd4;
+    text-align: center;
+    font-family: fantasy;
+}
+.group{
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    height: 70%;
+    margin: 0 auto;
+}
+.group input{
+    margin: 0.5rem;
+    border-radius: 5px;
+    border: none;
+    padding: 10px 20px;
+}
+.group select{
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: #d40091;
+}
+.button{
+    background-color: #00bcd4;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+.button:hover{
+    background-color: #087e8e;
+    color: white;
+}
+.genredis{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 2rem;
+    margin-left: 12rem;
+    align-items: center;
+    width: 70%;
+    order: -1;
+}
+.displaygenre button{
+    cursor: pointer;
+    color: white;
+    width: 11rem;
+    height: 1.5rem;
+    background-color: #d40091;
+    border-radius: 10px;
+    margin: 7px;
+    padding-bottom: 15px;
+    transition: all 300ms;
+    font-weight: 50px;
+    border-bottom: #00bcd4 solid 6px;
+    
+}
+.displaygenre button:hover{
+    background-color: aliceblue;
+    color: #1f1f1f;
+    transform: scale(1.1);
+    font-weight: 200px;
+}
+.deletegenre{
+    margin-top: 10px;
+}

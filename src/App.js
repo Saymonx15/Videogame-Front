@@ -5,15 +5,25 @@ import LandigPage from './components/LandigPage';
 import VideogameCreate from './components/VideogameCreate';
 import Details from './components/Details';
 
+
+
+
+
 function App() {
   return (
     <Router>
     <div className="App">
       <Switch>
+        
+        
+        <Route exact path="/home"  component={Home}  />
+        
         <Route exact path="/" component={LandigPage} />
-        <Route exact path="/home" component={Home} />
+        
+        
         <Route exact path="/videogame" component={VideogameCreate} />
         <Route exact path="/videogame/:id" component={Details} />
+       
       </Switch>
     
     </div>

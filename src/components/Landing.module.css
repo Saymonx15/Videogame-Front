@@ -1,8 +1,13 @@
-body{
+.landingPage{
     background-image: url("https://i.giphy.com/media/131Qzb8UXMMhLW/source.gif");
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: center;
+    height: 100vh;
+    width: 100vw;
+
 }
+
 .btnHome{
     background-color: #00bcd4;
     color: white;

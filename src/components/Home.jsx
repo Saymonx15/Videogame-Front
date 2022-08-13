@@ -2,13 +2,15 @@ import React from "react";
 import { Link } from "react-router-dom";
 import {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import { getVideogames, getGenres, filterGameByGenre, filterCreatedBy, orderBy, filterbyRating, ratingLow } from "../actions";
+import { getVideogames, getGenres, filterGameByGenre, filterCreatedBy, orderBy, filterbyRating, ratingLow,  } from "../actions";
 import Card from "./Card";
 import Paginado from "./Paginado";
 import SearchBar from "./SearchBar";
 import GenreSelector from "./Genres";
 import FilterInputRating from "./FilterRating";
 import styles from "./Home.module.css";
+import Loading from "./Loading";
+import Favorites from "./Favorites";
 
 export default function Home() {
 
@@ -17,7 +19,7 @@ export default function Home() {
     const allGames = useSelector((state) => state.videogames);
     const allFilter = useSelector((state) => state.filteredGames);
     const GenresAll = useSelector((state) => state.genres);
-
+    const favorites = useSelector((state) => state.favorites);
 
     const [order, setOrder] = useState("");
     const [currentPage, setCurrentPage] = useState(1); // setea la pagina actual
@@ -26,33 +28,26 @@ export default function Home() {
     const indexOfFirstGame = indexOfLastGame - gamesPerPage; // calcula el indice del primer game a mostrar en la pagina actual
     const currentGames = allFilter.length > 0 ? allFilter.slice(indexOfFirstGame, indexOfLastGame) : allGames.slice(indexOfFirstGame, indexOfLastGame) // es la constante que contiene los games a mostrar en cada pagina (CLAVE: currentGames)
 
-
+    
 
     const [filteredGames, setFilteredGames] = useState([]); // setea los games filtrados por genero (CLAVE: filteredGames)
-    const [filtered, setFiltered] = useState(false); // setea si hay games filtrados o no (CLAVE: filtered)
 
 
-
+    
 const paginado = (pageNumber) => {
     setCurrentPage(pageNumber);
 }
-
-
-    useEffect(() => {
+useEffect(() => {
         dispatch(getVideogames());
         dispatch(getGenres());
     }, [dispatch]);
 
- if(allGames.length === 0 && allFilter.length === 0){
-     return <h1 className={styles.TitleLanding}>Cargando...</h1>
- }
-    
+useEffect( ()=>{
+        dispatch(getGenres())
+    },[dispatch])
 
-    // useEffect( ()=>{
-    //     dispatch(getGenres())
-    // },[dispatch])
 
-    
+  
 
     function handleClickAllGames(e){
         e.preventDefault();
@@ -83,19 +78,21 @@ const paginado = (pageNumber) => {
         setCurrentPage(1);
     }
 
-
+ 
 
     return (
+        
         <div className={styles.container}> 
             <Link to="/videogame" className={styles.BtnCreated}> Crear Game</Link>
             <h1 className={styles.Title}> Play-gamer</h1>
-            <button onClick={e=>{handleClickAllGames(e)}}> Volver a cargar todos los videogames</button>
+            <button onClick={e=> {handleClickAllGames(e)}}> Volver a cargar todos los videogames</button>
             <FilterInputRating/>
             <div className={styles.searchBar}>
 
             <SearchBar  />
             </div>
-            <div>
+            <div className={styles.Selects}>
+                
                 <select onChange={e => handleOrderBy(e)}>
                     <option value="asc"> Ascendente</option>
                     <option value="desc"> Descendente</option>
@@ -122,32 +119,30 @@ const paginado = (pageNumber) => {
                  allFilter= {allFilter.length} 
                  paginado={paginado} 
                     />
-
-                 {  filteredGames.length > 0 ? allFilter.map((game) => {
+                <div className={styles.homeContainer}>
+                {currentGames.length === 0 && filteredGames.length === 0? <Loading /> : filteredGames.length >  0 || currentGames?.map((game) => {
                     return (
-                        <div className="CardGame" key={game.id}>
+                        
+                        <div className={styles.containerCard} key={game.id}>
+                          
+                        <div className={styles.CardGame}  >
+                            
                             <Link to={`/videogame/${game.id}`}>
-                            <Card  name={game.name} image={game.image} genre={game.genres} platforms={game.platforms} rating={game.rating}/>
+                            <Card   name={game.name} image={game.image} genres={game.genres} platforms={game.platforms} rating={game.rating}/>                        
                             </Link>
+                            
+                            
                         </div>
-                    );
-                } ) :                  
-                currentGames?.map((game) => {
-                    return (
-                        <div className="CardGame" key={game.id}>
-                            <Link to={`/videogame/${game.id}`}>
-                            <Card  name={game.name} image={game.image} genres={game.genres} platforms={game.platforms} rating={game.rating}/>
-                            </Link>
                         </div>
-                    );
-                } )}
-                
+                    )
+                })}  
+                </div>
                 
             </div>
         </div>
-
+    
     );
-
+            
 
 }
 

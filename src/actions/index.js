@@ -106,4 +106,13 @@ export function postVideogame(payload){
         console.log(data);
         return data
     }
+
+}
+
+export function addFavoritesGame(game){
+    console.log(game.id);
+       return{
+        type: "ADD_FAVORITES_GAME",
+        payload: game
+    }
 }

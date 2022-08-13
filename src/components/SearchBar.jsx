@@ -2,6 +2,8 @@ import React from "react";
 import {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {getNameVideogames} from "../actions";
+import style from './Searbar.module.css';
+
 
 
 export default function SearchBar() {
@@ -23,7 +25,7 @@ export default function SearchBar() {
     }
 
     return (
-        <div className="search-bar">
+        <div className={style.SearchBar}>
             <input type="text" placeholder="Buscar Name" value={name}  onChange={(e) => handleChange(e)} />
             <button type="submit" onClick={(e) => handleClick(e)}>Search</button>
         </div>

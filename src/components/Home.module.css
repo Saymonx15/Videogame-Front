@@ -1,7 +1,9 @@
 .container{
     padding: 0rem 7rem;
     background-image: url("https://media.istockphoto.com/vectors/game-background-with-gamepad-and-graphic-elements-joystick-sign-vector-id1207017851?k=20&m=1207017851&s=612x612&w=0&h=Ur1iIefBRRj3Jd34W-mNdKOAplKnhQ-hBPUaGJ8YfWg=");
-    
+    display: grid;
+    justify-content: center;
+    justify-items: center;
 }
 .BtnCreated{
     background-color: #00bcd4;
@@ -40,4 +42,69 @@
     color: white;
     text-align: center;
     font-family: fantasy;
+}
+.CardGame{   
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    
+}
+.CardGame a{
+    text-decoration: none;
+}
+.container button{
+    background-color: #00bcd4;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+.container button:hover{
+    background-color: #087e8e;
+    color: white;
+}
+.container input{
+    margin: 0.5rem;
+    border-radius: 5px;
+    border: none;
+    padding: 10px 20px;
+}
+.Selects select{ 
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: #d40091;
+    color: white;
+}
+
+.homeContainer{
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.containerCard{
+    display: flex ;
+    margin:1rem 0.5rem;
+    margin-bottom: 0.5rem;
+    height: 150px;
+    width: 250px;
+    border-radius: 10px;
+    background-color: #151515;
+    transition: all 300ms;
+    height: 340px;
+    background-color: rgba(32, 31, 31, 0.802);
+    border-radius: 15px;
+}
+.containerCard:hover{
+    transform: scale(1.1);
+    background-color: #00bcd4;
 }

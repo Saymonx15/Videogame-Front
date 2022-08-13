@@ -1,0 +1,14 @@
+.PaginadoBtn{
+    display: inline-block;
+    padding: 0.5em 1em;
+    margin: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    cursor: pointer;
+    background-color: #00bcd4;
+    color: #333;
+}
+.PaginadoBtn:active{
+    background-color: #d40091;
+    color: #333;
+}

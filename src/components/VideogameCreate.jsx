@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import {Link, useHistory} from "react-router-dom";
 import {postVideogame,getGenres} from "../actions";
 import { useDispatch, useSelector } from "react-redux";
+import style from "./VideogameCreate.module.css";
 
 
 function validate(formulario) {
@@ -122,27 +123,29 @@ export default function VideogameCreate(){
 
 
     return(
-        <div className="container">
-            <Link to='/home'> <button> Volver </button></Link>
-            <h1>Crear un nuevo videojuego</h1>
+        <div className={style.container}>
+            <Link to='/home'> <button className={style.button}> Volver </button></Link>
+            <h1 className={style.title}>Crear un nuevo videojuego</h1>
             <form onSubmit={(e) => handleSubmit(e)}>
-                <div>
-                    <label>Nombre:</label>
+                <div className={style.group}>
+                    <label className={style.label}>Nombre:</label>
                     <input type="text" name="name" onChange={(e) =>handleChange(e)}/>
                     {errors.name && <p style={{color: 'red'}}>{errors.name}</p>}
-                    <label>Descripcion:</label>
+                    <label className={style.label}>Descripcion:</label>
                     <input type="text" name="description" onChange={(e) =>handleChange(e)}/>
                     {errors.description && <p style={{color: 'red'}}>{errors.description}</p>}
-                    <label>Rating:</label>
+                    <label className={style.label}>Rating:</label>
                     <input type="number"  name="rating" onChange={(e) =>handleChange(e)}/>
                     {errors.rating && <p style={{color: 'red'}}>{errors.rating}</p>}   
-                    <label>Image:</label>
+                    <label className={style.label}>Image:</label>
                     <input type="text" name="image" onChange={(e) =>handleChange(e)}/>
-                    <label>Fecha de lanzamiento:</label>
+                    <br />
+                    <label className={style.label}>Fecha de lanzamiento:</label>
                     <input type="date" name="released" onChange={(e) =>handleChange(e)}/>
-                    <label>Generos:</label>
+                    <label className={style.label}>Generos:</label>
+                    
                     <div>
-                     <select name="genres" onChange={(e) =>handleChangeGenre(e)}>
+                        <select name="genres" onChange={(e) =>handleChangeGenre(e)}>
                         <option value="">Seleccione un genero</option>
                         {genres.map((genre) => {
                             return (<option key={genre.id} value={genre.name}>{genre.name} </option>                      
@@ -151,26 +154,31 @@ export default function VideogameCreate(){
                         </select>
                     </div>
                     
-                    <label>Plataformas:</label>
-                    <label><input type="checkbox" name="platforms" value="PC" onChange={(e) => handleCheck(e)}/>PC</label>
-                    <label><input type="checkbox" name="platforms" value="Playstation" onChange={(e) => handleCheck(e)}/>Playstation</label>
-                    <label><input type="checkbox" name="platforms" value="Xbox" onChange={(e) => handleCheck(e)}/>Xbox</label>
-                    <label><input type="checkbox" name="platforms" value="Nintendo" onChange={(e) => handleCheck(e)}/>Nintendo</label>
-                    <label><input type="checkbox" name="platforms" value="Switch" onChange={(e) => handleCheck(e)}/>Switch</label> 
-                    <label><input type="checkbox" name="platforms" value="Android" onChange={(e) => handleCheck(e)}/>Android</label>
-                    <label><input type="checkbox" name="platforms" value="IOS" onChange={(e) => handleCheck(e)}/>IOS</label>
-                    <label><input type="checkbox" name="platforms" value="macOS" onChange={(e) => handleCheck(e)}/>macOS</label>
-                    <label><input type="checkbox" name="platforms" value="Linux" onChange={(e) => handleCheck(e)}/>Linux</label>
+                    <label className={style.label}>Plataformas:</label>
+                    <label className={style.checkbox}><input type="checkbox" name="platforms" value="PC" onChange={(e) => handleCheck(e)}/>PC</label>
+                    <label className={style.checkbox}><input type="checkbox" name="platforms" value="Playstation" onChange={(e) => handleCheck(e)}/>Playstation</label>
+                    <label className={style.checkbox}><input type="checkbox" name="platforms" value="Xbox" onChange={(e) => handleCheck(e)}/>Xbox</label>
+                    <label className={style.checkbox}><input type="checkbox" name="platforms" value="Nintendo" onChange={(e) => handleCheck(e)}/>Nintendo</label>
+                    <label className={style.checkbox}><input type="checkbox" name="platforms" value="Switch" onChange={(e) => handleCheck(e)}/>Switch</label> 
+                    <label className={style.checkbox}><input type="checkbox" name="platforms" value="Android" onChange={(e) => handleCheck(e)}/>Android</label>
+                    <label className={style.checkbox}><input type="checkbox" name="platforms" value="IOS" onChange={(e) => handleCheck(e)}/>IOS</label>
+                    <label className={style.checkbox}><input type="checkbox" name="platforms" value="macOS" onChange={(e) => handleCheck(e)}/>macOS</label>
+                    <label className={style.checkbox}><input type="checkbox" name="platforms" value="Linux" onChange={(e) => handleCheck(e)}/>Linux</label>
+                    <br />
+               
                 
-                    <button type="submit" >Crear Videogame</button>
    
+                            <button type="submit"  className={style.button}>Crear Videogame</button>
                     </div>
             </form>
-            {formulario.genres.map(el => 
-                            <div>
-                                <p>{el}</p>
-                                <button  onClick={() => handleDeleteGenre(el)}>X</button>
+
+            <div className={style.genredis}>
+                    {formulario.genres.map(el => 
+                            <div className={style.displaygenre}>
+                                <p> <button  className={style.deletegenre} onClick={() => handleDeleteGenre(el)}>{el}</button></p>
                             </div>)}
+                    </div>
+           
 
             </div>
     )
